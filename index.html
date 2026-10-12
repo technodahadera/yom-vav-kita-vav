@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8f5fc">
+  <meta name="description" content="מערכת מחוננים יום שישי לכיתות ו׳ – תשפ״ז – טכנודע">
+  <title>מערכת מחוננים | יום שישי | כיתות ו׳ | תשפ״ז</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:#2d263b;
+      --purple:#883c99;
+      --purple-deep:#6f2a83;
+      --gap:clamp(3px, .55vw, 12px);
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; width:100%; height:100%; overflow:hidden; }
+    body {
+      font-family:'Rubik',Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      color:var(--ink);
+      background:radial-gradient(ellipse at 78% 0%,#f1e8f6 0%,transparent 51%),linear-gradient(145deg,#fcfafc,#f2f3fb);
+    }
+    button { font-family:inherit; }
+    .board {
+      width:100%; height:100vh; height:100dvh;
+      display:grid;
+      grid-template-rows:minmax(0,12fr) minmax(0,29fr) minmax(0,7fr) minmax(0,29fr) minmax(0,7fr) minmax(0,29fr);
+      gap:var(--gap);
+      padding:clamp(6px,1.15vw,22px);
+      overflow:hidden;
+    }
+    .topbar {
+      min-height:0; display:flex; justify-content:center; align-items:center;
+      position:relative; padding-inline:clamp(22px,3.5vw,65px);
+    }
+    h1 {
+      color:var(--purple-deep); font-size:clamp(18px,2.27vw,47px);
+      font-weight:900; line-height:1.18; letter-spacing:-.055em;
+      margin:0; text-align:center; white-space:nowrap;
+    }
+    .fullscreen {
+      position:absolute; inset-inline-end:0; top:50%; transform:translateY(-50%);
+      width:clamp(26px,2.8vw,50px); height:clamp(26px,2.8vw,50px);
+      display:grid;place-items:center; cursor:pointer;
+      color:#844697;background:#fff;border:1px solid #e9deed;
+      border-radius:clamp(7px,.9vw,14px);box-shadow:0 3px 12px #49325312;
+    }
+    .fullscreen svg { width:54%; height:54%; }
+    .fullscreen:hover { background:#f5eaf9; }
+    .fullscreen[hidden] { display:none; }
+    .gridline {
+      display:grid;
+      grid-template-columns:minmax(84px,9fr) repeat(7,minmax(0,12fr));
+      gap:var(--gap); direction:rtl; min-height:0;
+    }
+    .gridline.eight { grid-template-columns:minmax(84px,9fr) repeat(8,minmax(0,12fr)); }
+    .gridline > * { min-height:0; min-width:0; }
+    .time-cell {
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;gap:clamp(1px,.32vw,7px);
+      border-radius:clamp(8px,.9vw,17px);
+      padding:2px;
+      color:#77358c;background:linear-gradient(150deg,#e9dbf0,#f8f0fc);
+      border:1px solid #dfcae9;
+      box-shadow:0 2px 10px #6f45750c;
+    }
+    .time-label { font-size:clamp(9px,.75vw,15px);font-weight:700;opacity:.82; }
+    .time-number { font-size:clamp(12px,1.47vw,28px);line-height:1.06;font-weight:900;font-variant-numeric:tabular-nums;direction:ltr; }
+    .dash {height:2px;width:25%;border-radius:5px;background:#bb8bc8;}
+    .lesson {
+      --accent:#853e95; --tint:#f8eefa; --stroke:#eadcf1;
+      position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;gap:clamp(3px,.36vw,8px);padding:clamp(4px,.51vw,12px);
+      overflow:hidden;min-width:0;min-height:0;
+      background:linear-gradient(155deg,#fff 35%,var(--tint) 160%);
+      border:1px solid var(--stroke);border-radius:clamp(9px,.9vw,19px);
+      box-shadow:0 3px 12px #3c2b5513;cursor:zoom-in;
+      transition:transform .18s,box-shadow .18s,border-color .18s;
+    }
+    .lesson::before {
+      content:"";position:absolute;top:0;inset-inline:0;margin:auto;
+      width:42%;height:clamp(3px,.35vw,7px);border-radius:0 0 11px 11px;
+      background:var(--accent);opacity:.82;
+    }
+    .lesson:hover,.lesson:focus-visible {
+      transform:translateY(-2px);z-index:2;box-shadow:0 8px 22px #33254a27;
+      border-color:var(--accent);outline:none;
+    }
+    .lesson-title {
+      color:var(--accent);font-weight:900;
+      font-size:clamp(11px,1.25vw,25px);
+      line-height:1.14;letter-spacing:-.035em;overflow-wrap:break-word;
+    }
+    .lesson-teacher {font-weight:600;font-size:clamp(10px,1.1vw,22px);line-height:1.14;color:#35293f;}
+    .lesson-room {
+      font-weight:500;font-size:clamp(9px,1.08vw,21px);line-height:1.14;
+      color:#5e526a;padding:clamp(1px,.12vw,3px) clamp(2px,.23vw,6px);
+      border-radius:7px;background:#ffffffac;
+    }
+    .lesson-note {
+      font-size:clamp(8px,.78vw,15px);font-weight:700;color:var(--accent);
+      background:var(--tint);border:1px solid var(--stroke);
+      border-radius:99px;padding:clamp(1px,.15vw,3px) clamp(4px,.36vw,8px);line-height:1.15;
+    }
+    .empty {
+      min-height:0;border:1px solid #f0edf3;
+      border-radius:clamp(9px,.9vw,19px);
+      background:linear-gradient(160deg,#ffffffea,#faf8fcee);
+      box-shadow:0 3px 12px #3c2b550c;
+    }
+    .break-time {
+      display:flex;align-items:center;justify-content:center;
+      font-weight:800;font-size:clamp(9px,1vw,19px);direction:ltr;
+      color:#7c4490;background:#f4eaf7;border:1px solid #e6d9eb;
+      border-radius:clamp(6px,.7vw,14px);
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
+    }
+    .break-banner {
+      grid-column:span 7;display:flex;justify-content:center;align-items:center;
+      gap:clamp(4px,.65vw,13px);
+      font-weight:900;font-size:clamp(12px,1.28vw,26px);
+      color:#9344a4;background:linear-gradient(90deg,#f8eefb,#efe4f7,#f8eefb);
+      border:1px solid #eadcf0;border-radius:clamp(6px,.7vw,14px);
+    }
+    .break-banner::before,.break-banner::after {
+      content:"";width:clamp(10px,2.2vw,45px);height:2px;background:#c79bd3;border-radius:4px;
+    }
+    .modal-backdrop {
+      position:fixed;inset:0;z-index:10;background:#170d26bd;
+      backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:4vw;
+    }
+    .modal-backdrop[hidden] {display:none;}
+    .detail {
+      --accent:#883c99;--tint:#f8eefa;
+      width:min(95vw,760px);max-height:92dvh;overflow:auto;position:relative;
+      padding:clamp(26px,3.5vw,62px);
+      background:linear-gradient(160deg,#fff 30%,var(--tint) 170%);
+      border:3px solid var(--accent);border-radius:clamp(20px,2vw,32px);
+      box-shadow:0 30px 80px #110d255c;
+      display:flex;flex-direction:column;align-items:center;text-align:center;
+      gap:clamp(8px,1.2vw,20px);
+    }
+    .detail-kicker {font-weight:800;font-size:clamp(18px,2vw,32px);color:#744384;}
+    .detail-title {font-size:clamp(32px,4vw,70px);line-height:1.1;font-weight:900;color:var(--accent);}
+    .detail-teacher {font-size:clamp(24px,2.75vw,46px);font-weight:700;color:#403347;}
+    .detail-room {font-size:clamp(22px,2.5vw,40px);font-weight:500;color:#5d5164;}
+    .detail-time {font-size:clamp(20px,2vw,32px);font-weight:700;color:#7a398c;background:#ffffffdc;padding:8px 22px;border-radius:14px;direction:ltr;}
+    .detail-note {font-size:clamp(18px,1.6vw,25px);font-weight:600;color:#725186;}
+    .close {
+      position:absolute;left:clamp(12px,1.6vw,27px);top:clamp(12px,1.6vw,27px);
+      border:0;border-radius:50%;background:#ece6ef;
+      width:clamp(35px,3.3vw,52px);height:clamp(35px,3.3vw,52px);
+      font-size:clamp(22px,2vw,34px);color:#703581;cursor:pointer;
+    }
+    @media (max-aspect-ratio:1.35) {
+      .board{gap:3px;padding:4px;}
+      .gridline {gap:3px;grid-template-columns:minmax(56px,9fr) repeat(7,minmax(0,12fr));}
+      .gridline.eight {grid-template-columns:minmax(56px,9fr) repeat(8,minmax(0,12fr));}
+      h1 {font-size:clamp(13px,2.04vw,31px);white-space:normal;}
+      .lesson {gap:1px;padding:2px;}
+      .lesson-title {font-size:clamp(8px,1.1vw,18px);}
+      .lesson-teacher,.lesson-room {font-size:clamp(7px,.95vw,16px);}
+      .lesson-note {font-size:clamp(6px,.75vw,11px);padding:0 3px;}
+      .time-number{font-size:clamp(10px,1.12vw,20px);}
+      .time-label{font-size:8px;}
+    }
+    @media (max-height:540px) {
+      .lesson {gap:1px;}
+      .lesson::before {height:2px;}
+      .lesson-room {padding:0;}
+      .lesson-note{padding:0 3px;}
+      .time-label{display:none;}
+    }
+    @media (prefers-reduced-motion:reduce) {.lesson{transition:none;}}
+  </style>
+</head>
+<body>
+  <main class="board" id="board" aria-label="מערכת מחוננים יום שישי לכיתות ו׳">
+    <header class="topbar">
+      <h1>מערכת מחוננים יום שישי – כיתות ו׳ – תשפ״ז</h1>
+      <button class="fullscreen" id="fullscreen" type="button" title="מסך מלא" aria-label="הצג במסך מלא">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M3 16v3a2 2 0 0 0 2 2h3m13-5v3a2 2 0 0 1-2 2h-3"/>
+        </svg>
+      </button>
+    </header>
+  </main>
+  <div class="modal-backdrop" id="modal" hidden role="presentation">
+    <section class="detail" id="detail" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <button class="close" id="closeModal" type="button" aria-label="סגירה">×</button>
+      <div class="detail-kicker">מערכת מחוננים • יום שישי</div>
+      <div class="detail-title" id="detailTitle"></div>
+      <div class="detail-teacher" id="detailTeacher"></div>
+      <div class="detail-room" id="detailRoom"></div>
+      <div class="detail-note" id="detailNote" hidden></div>
+      <div class="detail-time" id="detailTime"></div>
+    </section>
+  </div>
+  <script>
+  'use strict';
+  // כל רצועה מופיעה מימין לשמאל, בדיוק בסדר שבע המשבצות במערכת המקורית.
+  // null משאיר משבצת ריקה כפי שהיא מופיעה בתמונה.
+  const courses = {
+    secrets:  {title:'דלת הסתרים',teacher:'רעות + אמנון',room:'מתחם VR',note:'לכיתות ד׳–ו׳',accent:'#7950a5',tint:'#f1eafa',stroke:'#e8def5'},
+    games:    {title:'תכנות משחקים',teacher:'אריה סנה',room:'מחשבים 2',accent:'#2f6f9d',tint:'#e7f2fc',stroke:'#d8e8f6'},
+    smart:    {title:'חומרים חכמים',teacher:'ענת אספורטס',room:'מעבדה 5',note:'רב־גילאי',accent:'#7354a3',tint:'#f1ebfa',stroke:'#e6ddf5'},
+    code:     {title:'הקוד של החומר',teacher:'טללית קופורטי',room:'חדר אלקטרוניקה',accent:'#257785',tint:'#e7f6f8',stroke:'#d4eaf0'},
+    math:     {title:'למה Math?',teacher:'סבטלנה',room:'מעבדה 2',accent:'#8b4a9c',tint:'#f7eaf8',stroke:'#efdaef'},
+    robot:    {title:'רובוטיקה',teacher:'איציק חיים',room:'חדר טכנולוגיה',accent:'#187b89',tint:'#e2f7f8',stroke:'#ceeaf0'},
+    invent:   {title:'ממציאAI',teacher:'ענת + קרן',room:'מעבדה 5',note:'רב־גילאי',accent:'#6b519e',tint:'#efeafb',stroke:'#e3dafa'},
+    force:    {title:'הכוח המניע',teacher:'יעלה ומשה',room:'מעבדה 4',note:'רב־גילאי',accent:'#a46a25',tint:'#fff1df',stroke:'#f7e2c8'},
+    scratch:  {title:'סקראץ׳',teacher:'ילנה קסלמן',room:'מחשבים 1',accent:'#3569aa',tint:'#ebf2ff',stroke:'#dce6f9'},
+    harry:    {title:'הארי פוטר',teacher:'אמנון הלל',room:'מעבדה 1',accent:'#83529c',tint:'#f5eafb',stroke:'#e9d9f4'},
+    pulse:    {title:'פעימה גורלית',teacher:'נתי מנצור',room:'יחידה רפואית',accent:'#a84667',tint:'#fff0f4',stroke:'#f5dce6'},
+    escape:   {title:'חידות וחדרי בריחה',teacher:'רעות וייס',room:'מתחם VR',accent:'#a05b28',tint:'#fff1e7',stroke:'#f5e2d5'},
+    python:   {title:'פייתון',teacher:'ילנה קסלמן',room:'חדר טכנולוגיה',accent:'#326ca2',tint:'#e8f2fc',stroke:'#d8e5f5'},
+    studio:   {title:'סטודיו חי',teacher:'טללית קופורטי',room:'חדר אלקטרוניקה',note:'רב־גילאי',accent:'#277b75',tint:'#e4f8f3',stroke:'#d3eee6'},
+    pharma:   {title:'ממולקולה לתרופה',teacher:'שני מס לביא',room:'מעבדה 6',accent:'#588445',tint:'#eef8e8',stroke:'#e1efd7'}
+  };
+  const schedule = [
+    {from:'8:00',to:'9:30',groups:['secrets','games','smart','code','math',null,null]},
+    {break:true,from:'9:30',to:'10:00'},
+    {from:'10:00',to:'11:20',groups:['robot','invent','force','math','scratch','harry','pulse']},
+    {break:true,from:'11:20',to:'11:30'},
+    {from:'11:30',to:'13:00',groups:['escape','python','pulse','studio','pharma','games',null]}
+  ];
+  // ברצועה האחרונה שמונה משבצות (כולל שתי משבצות ריקות), כפי שמופיע בצילום.
+  schedule[4].groups=['escape','python','pulse','studio','pharma','games',null,null];
+
+  const create=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el;};
+  const board=document.getElementById('board');
+  const modal=document.getElementById('modal');
+  const detail=document.getElementById('detail');
+  let lastFocus=null;
+  function closeDetail(){modal.hidden=true;if(lastFocus)lastFocus.focus();}
+  function openDetail(course,period,button){
+    lastFocus=button;
+    detail.style.setProperty('--accent',course.accent);
+    detail.style.setProperty('--tint',course.tint);
+    document.getElementById('detailTitle').textContent=course.title;
+    document.getElementById('detailTeacher').textContent=course.teacher;
+    document.getElementById('detailRoom').textContent=course.room;
+    const note=document.getElementById('detailNote');
+    note.textContent=course.note||'';note.hidden=!course.note;
+    document.getElementById('detailTime').textContent=period.from+' – '+period.to;
+    modal.hidden=false;document.getElementById('closeModal').focus();
+  }
+  for(const period of schedule){
+    const row=create('div','gridline '+(period.break?'break-row':'lesson-row')+(!period.break&&period.groups.length===8?' eight':''));
+    if(period.break){
+      row.append(create('div','break-time',period.from+' – '+period.to),create('div','break-banner','הפסקה'));
+    }else{
+      const tm=create('div','time-cell');
+      tm.append(create('span','time-label','שעות לימוד'),create('span','time-number',period.from),create('span','dash'),create('span','time-number',period.to));
+      row.append(tm);
+      period.groups.forEach((key,index)=>{
+        if(!key){const empty=create('div','empty');empty.setAttribute('aria-label','אין שיבוץ');row.append(empty);return;}
+        const course=courses[key];const cell=create('button','lesson');cell.type='button';
+        cell.style.setProperty('--accent',course.accent);
+        cell.style.setProperty('--tint',course.tint);
+        cell.style.setProperty('--stroke',course.stroke);
+        cell.setAttribute('aria-label',`${period.from} עד ${period.to}: ${course.title}, ${course.teacher}, ${course.room}${course.note?', '+course.note:''}. לחצו להגדלה`);
+        cell.append(create('span','lesson-title',course.title),create('span','lesson-teacher',course.teacher),create('span','lesson-room',course.room));
+        if(course.note)cell.append(create('span','lesson-note',course.note));
+        cell.addEventListener('click',()=>openDetail(course,period,cell));row.append(cell);
+      });
+    }
+    board.append(row);
+  }
+  document.getElementById('closeModal').addEventListener('click',closeDetail);
+  modal.addEventListener('click',e=>{if(e.target===modal)closeDetail()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeDetail()});
+  document.getElementById('fullscreen').addEventListener('click',()=>{
+    if(document.fullscreenElement){document.exitFullscreen?.()}else{document.documentElement.requestFullscreen?.()}
+  });
+  if(new URLSearchParams(location.search).get('embed')==='1')document.getElementById('fullscreen').hidden=true;
+  </script>
+</body>
+</html>
