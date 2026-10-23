@@ -203,13 +203,13 @@
   </div>
   <script>
   'use strict';
-  // כל רצועה מופיעה מימין לשמאל, בדיוק בסדר שבע המשבצות במערכת המקורית.
+  // כל רצועה מופיעה מימין לשמאל, בדיוק לפי סדר המשבצות במערכת המעודכנת.
   // null משאיר משבצת ריקה כפי שהיא מופיעה בתמונה.
   const courses = {
     secrets:  {title:'דלת הסתרים',teacher:'רעות + אמנון',room:'מתחם VR',note:'לכיתות ד׳–ו׳',accent:'#7950a5',tint:'#f1eafa',stroke:'#e8def5'},
     games:    {title:'תכנות משחקים',teacher:'אריה סנה',room:'מחשבים 2',accent:'#2f6f9d',tint:'#e7f2fc',stroke:'#d8e8f6'},
     smart:    {title:'חומרים חכמים',teacher:'ענת אספורטס',room:'מעבדה 5',note:'רב־גילאי',accent:'#7354a3',tint:'#f1ebfa',stroke:'#e6ddf5'},
-    code:     {title:'הקוד של החומר',teacher:'טללית קופורטי',room:'חדר אלקטרוניקה',accent:'#257785',tint:'#e7f6f8',stroke:'#d4eaf0'},
+    code:     {title:'הקוד של החומר',teacher:'טללית קונפורטי',room:'חדר אלקטרוניקה',accent:'#257785',tint:'#e7f6f8',stroke:'#d4eaf0'},
     math:     {title:'למה Math?',teacher:'סבטלנה',room:'מעבדה 2',accent:'#8b4a9c',tint:'#f7eaf8',stroke:'#efdaef'},
     robot:    {title:'רובוטיקה',teacher:'איציק חיים',room:'חדר טכנולוגיה',accent:'#187b89',tint:'#e2f7f8',stroke:'#ceeaf0'},
     invent:   {title:'ממציאAI',teacher:'ענת + קרן',room:'מעבדה 5',note:'רב־גילאי',accent:'#6b519e',tint:'#efeafb',stroke:'#e3dafa'},
@@ -219,18 +219,19 @@
     pulse:    {title:'פעימה גורלית',teacher:'נתי מנצור',room:'יחידה רפואית',accent:'#a84667',tint:'#fff0f4',stroke:'#f5dce6'},
     escape:   {title:'חידות וחדרי בריחה',teacher:'רעות וייס',room:'מתחם VR',accent:'#a05b28',tint:'#fff1e7',stroke:'#f5e2d5'},
     python:   {title:'פייתון',teacher:'ילנה קסלמן',room:'חדר טכנולוגיה',accent:'#326ca2',tint:'#e8f2fc',stroke:'#d8e5f5'},
-    studio:   {title:'סטודיו חי',teacher:'טללית קופורטי',room:'חדר אלקטרוניקה',note:'רב־גילאי',accent:'#277b75',tint:'#e4f8f3',stroke:'#d3eee6'},
-    pharma:   {title:'ממולקולה לתרופה',teacher:'שני מס לביא',room:'מעבדה 6',accent:'#588445',tint:'#eef8e8',stroke:'#e1efd7'}
+    studio:   {title:'סטודיו חי',teacher:'טללית קונפורטי',room:'חדר אלקטרוניקה',note:'רב־גילאי',accent:'#277b75',tint:'#e4f8f3',stroke:'#d3eee6'},
+    pharma:   {title:'ממולקולה לתרופה',teacher:'שני מס לביא',room:'מעבדה 6',accent:'#588445',tint:'#eef8e8',stroke:'#e1efd7'},
+    theater:  {title:'תיאטרון',teacher:'שושי חפץ',room:'אודיטוריום',accent:'#99438e',tint:'#f9edf7',stroke:'#efd7e8'}
   };
   const schedule = [
-    {from:'8:00',to:'9:30',groups:['secrets','games','smart','code','math',null,null]},
+    {from:'8:00',to:'9:30',groups:['secrets','games','smart','code','math','theater',null]},
     {break:true,from:'9:30',to:'10:00'},
     {from:'10:00',to:'11:20',groups:['robot','invent','force','math','scratch','harry','pulse']},
     {break:true,from:'11:20',to:'11:30'},
-    {from:'11:30',to:'13:00',groups:['escape','python','pulse','studio','pharma','games',null]}
+    {from:'11:30',to:'13:00',groups:['escape','python','pulse','studio','pharma','games','theater']}
   ];
-  // ברצועה האחרונה שמונה משבצות (כולל שתי משבצות ריקות), כפי שמופיע בצילום.
-  schedule[4].groups=['escape','python','pulse','studio','pharma','games',null,null];
+  // ברצועה האחרונה שמונה משבצות (כולל משבצת ריקה אחת), כפי שמופיע בצילום.
+  schedule[4].groups=['escape','python','pulse','studio','pharma','games','theater',null];
 
   const create=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el;};
   const board=document.getElementById('board');
